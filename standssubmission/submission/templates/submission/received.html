@@ -1,0 +1,11 @@
+{% extends "submission/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="row" id="submission-ok">
+        <div class="col">
+            <div class="alert alert-success">
+                Your {{ edition }} submission for {{ project }} has been received. You'll receive an e-mail confirming this. As soon as we have made our decision, you'll be informed.
+            </div>
+        </div>
+    </div>
+{% endblock %}

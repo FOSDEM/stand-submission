@@ -79,3 +79,6 @@ class Theme(models.Model):
 class DigitalEdition(models.Model):
     showcase = models.TextField('Showcase')
     new_this_year = models.TextField('What\'s new this year')
+
+    def __str__(self):
+        return 'Digital submission for {0}'.format(self.submission_set.all()[0].project.name)

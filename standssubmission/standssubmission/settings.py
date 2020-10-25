@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import datetime
+from pytz import timezone
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,3 +129,9 @@ STATIC_URL = '/static/'
 # Custom settings
 EDITION = '2021'
 DIGITAL_EDITION = True
+SUBMISSION_DEADLINE = datetime(
+    2020,
+    11,
+    15,
+    tzinfo=timezone('Europe/Brussels')
+)
