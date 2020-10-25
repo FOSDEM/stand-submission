@@ -1,0 +1,18 @@
+version: '3'
+services:
+  stands:
+    build: .
+    image: stands:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code
+    environment:
+      FLASK_ENV: development
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: stands
+      POSTGRES_USER: stands
+
