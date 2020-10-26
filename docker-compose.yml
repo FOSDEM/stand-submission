@@ -1,6 +1,7 @@
 version: '3'
 services:
   stands:
+    hostname: osiris.nidavellir.be
     build: .
     image: stands:latest
     ports:

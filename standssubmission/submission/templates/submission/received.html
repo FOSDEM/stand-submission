@@ -1,11 +1,21 @@
 {% extends "submission/base.html" %}
 {% load static %}
-{% block content %}
+{% block form %}
     <div class="row" id="submission-ok">
         <div class="col">
+            {% if failed %}
+                <div class="alert alert-warning">
+                Your submission for has not been received. Please contact us at <i>stands@fosdem.org</i>.
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    {{ field.errors }}
+                {% endfor %}
+            </div>
+            {% else %}
             <div class="alert alert-success">
                 Your {{ edition }} submission for {{ project }} has been received. You'll receive an e-mail confirming this. As soon as we have made our decision, you'll be informed.
             </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

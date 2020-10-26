@@ -1,10 +1,10 @@
 {% extends "submission/base.html" %}
 {% load static %}
 {% load submission %}
-{% block content %}
+{% block form %}
     <div class="row" id="submission-form">
         <div class="col">
-            <form action="" method="post">
+            <form action="{% url 'received' %}" method="post">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
                 {% for field in form %}

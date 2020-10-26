@@ -2,6 +2,12 @@ from django.db import models
 
 # Create your models here.
 
+DURATION_CHOICES = [
+    ('ALL', 'Entire conference'),
+    ('SAT', 'Saturday'),
+    ('SUN', 'Sunday')
+]
+
 
 class Submission(models.Model):
     fosdem_edition = models.CharField('FOSDEM edition', max_length=5)
@@ -13,11 +19,7 @@ class Submission(models.Model):
     duration = models.CharField(
         'Duration',
         max_length=3,
-        choices=[
-            ('ALL', 'Entire conference'),
-            ('SAT', 'Saturday'),
-            ('SUN', 'Sunday')
-        ],
+        choices=DURATION_CHOICES,
         default='ALL'
     )
     primary_contact = models.ForeignKey(
@@ -32,7 +34,7 @@ class Submission(models.Model):
         related_name='secondary_contact'
     )
     secondary_reason = models.TextField('Secondary contact relation to project')
-    notes = models.TextField('Comments')
+    notes = models.TextField('Comments', null=True)
     late_submission = models.BooleanField('Late submission', default=False)
     submission_date = models.DateTimeField('Submission date')
     submission_for_digital_edition = models.BooleanField('Digital edition', default=False)

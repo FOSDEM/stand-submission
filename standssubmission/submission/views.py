@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .mail import SubmissionMail
 from .models import *
 from .forms import *
 from django.conf import settings
@@ -10,6 +11,14 @@ from pytz import timezone
 
 
 def index(request):
+    form = SubmissionForm()
+    return render(request, 'submission/form.html', {
+        'form': form,
+        'digital_edition': settings.DIGITAL_EDITION
+    })
+
+
+def received(request):
     if request.method == 'POST':
         form = SubmissionForm(request.POST)
         if form.is_valid():
@@ -69,21 +78,19 @@ def index(request):
                 digital_edition=digital_edition,
                 late_submission=late_submission
             )
+
+            submission_mail = SubmissionMail(submission)
+            submission_mail.send()
             return render(request, 'submission/received.html', {
+                'failed': False,
                 'project': project.name,
                 'edition': submission.fosdem_edition
             })
-
-    else:
-        form = SubmissionForm()
-    return render(request, 'submission/form.html', {
-        'form': form,
-        'digital_edition': settings.DIGITAL_EDITION
-    })
-
-
-def submit(request):
-    pass
+        else:
+            return render(request, 'submission/received.html', {
+                'failed': True,
+                'form': form
+            })
 
 
 def add_contact(contact_data):

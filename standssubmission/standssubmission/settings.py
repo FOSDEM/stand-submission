@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 from datetime import datetime
 from pytz import timezone
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'hf3sdy8mwquwdr6s-+@rmzf1u2gw*qyr)gg7i083%_32w=+ra9'
+SECRET_KEY = 'NOT_A_SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -39,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'submission'
+    'submission',
+    'stands',
+    'standsreview'
 ]
 
 MIDDLEWARE = [
@@ -57,7 +60,9 @@ ROOT_URLCONF = 'standssubmission.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,12 +131,32 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+##
 # Custom settings
+##
+
+# Edition
 EDITION = '2021'
-DIGITAL_EDITION = True
+DIGITAL_EDITION = False
+
+# Deadlines
 SUBMISSION_DEADLINE = datetime(
     2020,
     11,
     15,
     tzinfo=timezone('Europe/Brussels')
 )
+ANNOUNCEMENT_DATE = datetime(
+    2020,
+    12,
+    1,
+    tzinfo=timezone('Europe/Brussels')
+)
+
+# E-mails
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'stands'
+EMAIL_HOST_PASSWORD = 'stands'
+
+from .local_settings import *
