@@ -21,11 +21,26 @@ class Review(models.Model):
     )
     comments = models.TextField('Comments', null=True)
 
+    def __str__(self):
+        reviewer = self.reviewer.username
+        if self.reviewer.first_name and self.reviewer.last_name:
+            reviewer = '{0} {1}'.format(self.reviewer.first_name, self.reviewer.last_name)
+        return 'Review by {0} for {1}'.format(reviewer, self.submission.__str__())
+
 
 class Decision(models.Model):
-    submission = models.ForeignKey(
+    submission = models.OneToOneField(
         'submission.Submission',
         models.CASCADE,
         related_name='decision'
     )
     accepted = models.BooleanField('Accepted', default=False)
+
+    def __str__(self):
+        accepted = 'accepted'
+        if not self.accepted:
+            accepted = 'not accepted'
+        return '{0}: {1}'.format(
+            self.submission.__str__(),
+            accepted
+        )

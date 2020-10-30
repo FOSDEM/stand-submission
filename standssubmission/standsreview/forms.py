@@ -10,3 +10,7 @@ class LoginForm(forms.Form):
 class ReviewForm(forms.Form):
     comments = forms.CharField(label='Comments', widget=forms.Textarea, required=False)
     score = forms.CharField(label='Score', widget=forms.NumberInput, empty_value=0)
+
+
+class DecisionForm(forms.Form):
+    accepted = forms.BooleanField(label='Accepted')

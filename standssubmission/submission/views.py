@@ -25,7 +25,7 @@ def received(request):
             try:
                 project = Project.objects.get(name=form.cleaned_data['project_name'])
             except Project.DoesNotExist:
-                project = Project.objects.create(
+                project = Project(
                     name=form.cleaned_data['project_name'],
                     description=form.cleaned_data['project_description'],
                     theme_id=form.cleaned_data['project_theme'],
@@ -39,7 +39,7 @@ def received(request):
                 project.website = form.cleaned_data['project_website']
                 project.social = form.cleaned_data['project_social']
                 project.source = form.cleaned_data['project_source']
-                project.save()
+            project.save()
 
             primary_contact = add_contact({
                 'name': form.cleaned_data['submission_primary_name'],
@@ -51,10 +51,11 @@ def received(request):
             })
 
             if settings.DIGITAL_EDITION:
-                digital_edition = DigitalEdition.objects.create(
+                digital_edition = DigitalEdition(
                     showcase=form.cleaned_data['digital_showcase'],
                     new_this_year=form.cleaned_data['digital_what_is_new']
                 )
+                digital_edition.save()
             else:
                 digital_edition = None
 
@@ -63,7 +64,7 @@ def received(request):
             if submission_dt > settings.SUBMISSION_DEADLINE:
                 late_submission = True
 
-            submission = Submission.objects.create(
+            submission = Submission(
                 fosdem_edition=settings.EDITION,
                 project_id=project.id,
                 justification=form.cleaned_data['submission_justification'],
@@ -78,6 +79,7 @@ def received(request):
                 digital_edition=digital_edition,
                 late_submission=late_submission
             )
+            submission.save()
 
             submission_mail = SubmissionMail(submission)
             submission_mail.send()
@@ -97,11 +99,11 @@ def add_contact(contact_data):
     try:
         contact = Contact.objects.get(email=contact_data['email'])
     except Contact.DoesNotExist:
-        contact = Contact.objects.create(
+        contact = Contact(
             name=contact_data['name'],
             email=contact_data['email']
         )
     else:
         contact.name = contact_data['name']
-        contact.save()
+    contact.save()
     return contact

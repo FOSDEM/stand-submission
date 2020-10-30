@@ -3,13 +3,16 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
 from django.conf import settings
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from submission.models import Submission
 from .models import Review, Decision
 from .reviews.output import format_review
 from .forms import *
+import json
 
 # Create your views here.
 login_url = '/review/login'
@@ -21,8 +24,8 @@ def index_view(request):
     return render(request, 'standsreview/review.html', {})
 
 
-@login_required(login_url=login_url)
-@permission_required('review.add_review', login_url=login_url)
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated, DjangoModelPermissions])
 @api_view(['GET'])
 def submission_api(request, edition=settings.EDITION):
     submissions = Submission.objects.filter(fosdem_edition=edition)
@@ -43,15 +46,20 @@ def submission_api(request, edition=settings.EDITION):
     })
 
 
-@login_required(login_url=login_url)
-@permission_required('review.add_review', login_url=login_url)
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated, DjangoModelPermissions])
 @api_view(['GET', 'PUT', 'POST', 'DELETE'])
 def review_api(request, submission_id, review_id=None):
     submission = get_object_or_404(Submission, id=submission_id)
     if not review_id:
         if request.method == 'GET':
+            only_mine = request.GET.get('mine', 'false')
+            if only_mine == 'true':
+                reviews = submission.reviews.filter(reviewer_id=request.user.id)
+            else:
+                reviews = submission.reviews.all()
             formatted_reviews = []
-            for review in submission.reviews_set.all():
+            for review in reviews:
                 formatted_reviews.append(format_review(review))
             return JsonResponse({
                 'page': 1,
@@ -60,35 +68,70 @@ def review_api(request, submission_id, review_id=None):
                 'results': formatted_reviews
             })
         elif request.method == 'POST':
-            form = ReviewForm(request.POST)
+            form = ReviewForm(json.loads(request.body))
             if form.is_valid():
-                review = Review.objects.create(
+                review = Review(
                     submission=submission,
                     reviewer=request.user,
                     comments=form.cleaned_data['comments'],
                     score=form.cleaned_data['score']
                 )
+                review.save()
                 return JsonResponse(format_review(review))
             else:
                 return Response({'msg': form.errors}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'msg': 'Invalid parameter.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     else:
+        review = get_object_or_404(Review, id=review_id)
         if request.method == 'GET':
-            pass
+            return JsonResponse(format_review(review))
         elif request.method == 'PUT':
-            pass
+            form = ReviewForm(json.loads(request.body))
+            if form.is_valid():
+                review.comments = form.cleaned_data['comments']
+                review.score = form.cleaned_data['score']
+                review.save()
+                return JsonResponse(format_review(review))
+            else:
+                return Response({'msg': form.errors}, status=status.HTTP_400_BAD_REQUEST)
         elif request.method == 'DELETE':
-            pass
+            review.delete()
+            return JsonResponse({'msg': 'Review has been deleted.'})
         else:
             return Response({'msg': 'Invalid parameter.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-@login_required(login_url=login_url)
-@permission_required('decision.add_decision', login_url=login_url)
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated, DjangoModelPermissions])
 @api_view(['GET', 'PUT'])
-def decision_api(request):
-    pass
+def decision_api(request, submission_id):
+    submission = get_object_or_404(Submission, id=submission_id)
+    try:
+        decision = submission.decision
+    except Decision.DoesNotExist:
+        decision = Decision(
+            submission=submission
+        )
+        decision.save()
+    if request.method == 'GET':
+        return JsonResponse({
+            'submission_id': submission.id,
+            'submission': submission.__str__(),
+            'accepted': decision.accepted
+        })
+    else:
+        form = DecisionForm(json.loads(request.body))
+        if form.is_valid():
+            decision.accepted = form.cleaned_data['accepted']
+            decision.save()
+            return JsonResponse({
+                'submission_id': submission.id,
+                'submission': submission.__str__(),
+                'accepted': decision.accepted
+            })
+        else:
+            return Response({'msg': form.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 def login_view(request):
