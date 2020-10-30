@@ -1,10 +1,15 @@
-{% extends "submission/base.html" %}
+{% extends "standsreview/base.html" %}
 {% load static %}
 {% load submission %}
 {% block form %}
-    <div class="row" id="submission-form">
+    <div class="row" id="login-form">
         <div class="col">
-            <form action="{% url 'received' %}" method="post">
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form action="{% url 'login' %}" method="post">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
                 {% for field in form %}
@@ -17,7 +22,7 @@
                         {{ field }}
                     {% endif %}
                 {% endfor %}
-                <input type="submit" value="Submit"/>
+                <input type="submit" value="Log in"/>
             </form>
         </div>
     </div>
