@@ -3,11 +3,12 @@
     {% load static %}
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css"
-          href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/datatables.min.css"/>
+          href="{% static 'standsreview/css/lib/datatables.min.css' %}"/>
 
     <script type="text/javascript"
-            src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/datatables.min.js"></script>
+            src="{% static 'standsreview/js/lib/datatables.min.js' %}"></script>
     <!-- Custom scripts -->
+    <script type="text/javascript" src="{% static 'standsreview/js/review.js' %}"></script>
     <div class="container-fluid" id="stands-header">
         <div class="row mb-4 justify-content-center px-4 mx-4">
             <div class="col-8 p-2">
