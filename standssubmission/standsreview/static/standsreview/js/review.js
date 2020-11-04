@@ -2,74 +2,54 @@ class ReviewTable {
 
     constructor() {
         this.table = document.querySelector('#review-table');
+        this.body = this.table.querySelector('tbody');
         let cls = this;
+        fetch('/review/api/submissions')
+            .then(function (response) {
+                if (!response.ok) {
+                    response.text().then(function (msg) {
+                        cls._error(parent, msg);
+                    });
+                } else {
+                    response.json().then(function (results) {
+                        for (let i = 0; i < results['results'].length; i++) {
+                            let submission = results['results'][i];
+                            let tr = document.createElement('tr');
+                            // Project
+                            tr.appendChild(cls._td(submission['project']));
+                            // Description
+                            tr.appendChild(cls._td(submission['description']));
+                            // Justification
+                            tr.appendChild(cls._td(submission['justification']));
+                            // Review
+                            let td_review = document.createElement('td');
+                            tr.appendChild(td_review);
+                            cls.my_review(td_review, submission['id']);
+                            // Score
+                            let td_score = document.createElement('td');
+                            tr.appendChild(td_score);
+                            cls.my_score(td_score, submission['id']);
+                            // Total score
+                            let td_scores = document.createElement('td');
+                            tr.appendChild(td_scores);
+                            cls.scores(td_scores, submission['id']);
+                            // Accepted
+                            let td_decision = document.createElement('td');
+                            tr.appendChild(td_decision);
+                            cls.decision(td_decision, submission['id']);
+                            // More details
+                            tr.appendChild(cls._td('Link'));
+                            cls.body.appendChild(tr);
+                        }
+                    });
+                }
+            });
         this.table.addEventListener('change', function (event) {
             cls._submit(event.target);
         });
     }
 
-    options() {
-        let cls = this;
-        return {
-            ajax: {
-                url: '/review/api/submissions',
-                dataSrc: 'results'
-            },
-            paging: false,
-            order: [
-                [0, 'asc']
-            ],
-            columnDefs: [
-                {
-                    // My review
-                    render: function (data, type, row) {
-                        return cls._review_form(data).outerHTML;
-                    },
-                    targets: 3
-                },
-                {
-                    // My score
-                    render: function (data, type, row) {
-                        return cls._score_form(data).outerHTML;
-                    },
-                    targets: 4
-                },
-                {
-                    // Total score
-                    render: function (data, type, row) {
-                        return '0';
-                    },
-                    targets: 5
-                },
-                {
-                    // Accepted
-                    render: function (data, type, row) {
-                        return '';
-                    },
-                    targets: 6
-                },
-                {
-                    // More details
-                    render: function (data, type, row) {
-                        return '';
-                    },
-                    targets: 7
-                }
-            ],
-            columns: [
-                {data: 'project'},
-                {data: 'description'},
-                {data: 'justification'},
-                {data: 'id'},
-                {data: 'id'},
-                {data: 'id'},
-                {data: 'id'},
-                {data: 'id'}
-            ]
-        };
-    }
-
-    reviews(parent, submission_id) {
+    scores(parent, submission_id) {
         let cls = this;
         fetch('/review/api/review/submission/' + submission_id + '/review')
             .then(function (response) {
@@ -101,16 +81,18 @@ class ReviewTable {
                     response.json().then(function (results) {
                         // Comments
                         let comments_i = parent.querySelector('textarea');
-                        if (comments_i === undefined) {
+                        if (comments_i === undefined || comments_i === null) {
                             // Comments
                             let f = cls._review_form(submission_id);
                             parent.appendChild(f);
                             comments_i = parent.querySelector('textarea');
                         }
-                        if (results['length'] === 0) {
+                        comments_i.setAttribute('data-submission-id', submission_id);
+                        if (results['total'] === 0) {
                             comments_i.setAttribute('placeholder', 'Any notes for your review.');
                         } else {
-                            comments_i.setAttribute('value', results['results'][0]['comments']);
+                            comments_i.textContent = results['results'][0]['comments'];
+                            comments_i.setAttribute('data-review-id', results['results'][0]['id']);
                         }
                     });
                 }
@@ -144,16 +126,18 @@ class ReviewTable {
                     response.json().then(function (results) {
                         // Score
                         let score_i = parent.querySelector('input');
-                        if (score_i === undefined) {
+                        if (score_i === undefined || score_i === null) {
                             let f = cls._score_form(submission_id);
                             parent.appendChild(f);
-                            score_i = parent.querySelector('textarea');
+                            score_i = parent.querySelector('input');
                         }
-                        if (results['length'] === 0) {
+                        score_i.setAttribute('data-submission-id', submission_id);
+                        if (results['total'] === 0) {
                             score_i.setAttribute('placeholder', '0');
                             score_i.setAttribute('value', '0');
                         } else {
                             score_i.setAttribute('value', results['results'][0]['score']);
+                            score_i.setAttribute('data-review-id', results['results'][0]['id']);
                         }
                     });
                 }
@@ -188,13 +172,13 @@ class ReviewTable {
                 } else {
                     response.json().then(function (decision) {
                         let decision_i = parent.querySelector('input');
-                        if (decision_i === undefined) {
+                        if (decision_i === undefined || decision_i === null) {
                             let f = document.createElement('form');
                             f.setAttribute('class', 'form-inline');
                             parent.appendChild(f);
                             let d = document.createElement('div');
                             d.setAttribute('class', 'form-check form-check-inline');
-                            let decision_i = document.createElement('input');
+                            decision_i = document.createElement('input');
                             decision_i.setAttribute('type', 'checkbox');
                             decision_i.setAttribute('id', submission_id + '-decision');
                             decision_i.setAttribute('class', 'form-check-input');
@@ -214,12 +198,32 @@ class ReviewTable {
     }
 
     _submit(input) {
-        console.log(input);
+        let cls = this;
+        let url = '/review/api/review/submission/' + input.getAttribute('data-submission-id') + '/review/';
+        let data = {
+            'comments': '',
+            'score': ''
+        };
+        if (input.hasAttribute('data-review-id')) {
+            url = url + input.getAttribute('data-review-id');
+        }
+        fetch(url, {
+            method: 'POST'
+        })
+            .then(function(response) {
+                if (!response.ok) {
+                    response.text().then(function (msg) {
+                        cls._error(parent, msg);
+                    });
+                } else {
+                    response.json().then(function(response) {});
+                }
+            })
     }
 
     _error(parent, msg) {
         let d = parent.querySelector('.alert');
-        if (d === undefined) {
+        if (d === undefined || d === null) {
             d = document.createElement('div');
             d.setAttribute('class', 'alert alert-danger');
             parent.appendChild(d);
@@ -227,11 +231,18 @@ class ReviewTable {
         d.textContent = msg;
     }
 
+    _td(content) {
+        let td = document.createElement('td');
+        if (content instanceof Element) {
+            td.appendChild(content);
+        } else {
+            td.textContent = content;
+        }
+        return td;
+    }
+
 }
 
-$(document).ready( function () {
+$(document).ready(function () {
     let table = new ReviewTable();
-    let dt = $('#review-table');
-    console.log(dt);
-    dt.DataTable(table.options());
 });
