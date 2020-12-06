@@ -3,6 +3,12 @@
     name:
       - nginx
   state: present
+- name: Create application path
+  file:
+    path: /var/opt/app/fosdem_submission/static
+    state: directory
+    owner: fosdem_submission
+    group: fosdem_submission
 - name: Create systemd service file
   template:
     dest: /etc/systemd/system/fosdem_submission.service
@@ -14,9 +20,9 @@
     enabled: yes
     daemon_reload: yes
 - name: Install nginx configuration file
-  template:
+  copy:
     dest: /etc/nginx/conf.d/fosdem_submission.conf
-    src: nginx.conf.j2
+    src: nginx.conf
 - name: Reload nginx
   service:
     name: nginx
