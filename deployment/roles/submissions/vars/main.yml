@@ -1,0 +1,19 @@
+version: 1.0.0-pre1
+edition: 2021
+deadline:
+  year: 2020
+  month: 12
+  day: 25
+announcement:
+  year: 2021
+  month: 1
+  day: 1
+db:
+  host: 172.20.22.145
+  port: 5432
+  user: stands
+  name: stands
+email:
+  host: mail.fosdem.org
+  port: 587
+  username: stands_submission@FOSDEM.ORG

@@ -1,0 +1,9 @@
+---
+- hosts: all
+  vars_prompt:
+    - name: db_password
+      prompt: Provide the password for the database
+    - name: email_password
+      prompt: Provide the password for the e-mail user
+  roles:
+    - submissions

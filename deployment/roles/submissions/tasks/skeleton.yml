@@ -1,0 +1,11 @@
+- name: Create application path
+  file:
+    path: /var/opt/app
+    state: directory
+- name: Create application user
+  user:
+    name: fosdem_submission
+    create_home: yes
+    home: /var/opt/app/fosdem_submission
+    password: '*'
+    shell: /usr/bin/false

@@ -1,0 +1,23 @@
+- name: Install dependencies
+  package:
+    name:
+      - nginx
+  state: present
+- name: Create systemd service file
+  template:
+    dest: /etc/systemd/system/fosdem_submission.service
+    src: fosdem_submission.service.j2
+- name: Start tool
+  systemd:
+    name: fosdem_submission
+    state: started
+    enabled: yes
+    daemon_reload: yes
+- name: Install nginx configuration file
+  template:
+    dest: /etc/nginx/conf.d/fosdem_submission.conf
+    src: nginx.conf.j2
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded

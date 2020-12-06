@@ -1,0 +1,23 @@
+- name: Download latest release
+  get_url:
+    url: "https://github.com/pieterdp/fosdem-stand-submission/archive/{{version}}.tar.gz"
+    dest: /var/opt/app/fosdem_submission/source.tar.gz
+- name: Extract release
+  unarchive:
+    src: /var/opt/app/fosdem_submission/source.tar.gz
+    remote_src: yes
+    dest: /var/opt/app/fosdem_submission
+- name: Install dependencies
+  pip:
+    chdir: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}"
+    requirements: requirements.txt
+    virtualenv: "/var/opt/app/fosdem_submission/{{version}}-venv"
+- name: Deploy configuration
+  template:
+    src: local_settings.py.j2
+    dest: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/standssubmission/standssubmission/local_settings.py"
+- name: Run migrations
+  community.general.django_manage:
+    command: 'migrate'
+    project_path: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/standssubmission/standssubmission"
+    virtualenv: "/var/opt/app/fosdem_submission/{{version}}-venv"

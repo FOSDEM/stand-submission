@@ -1,0 +1,36 @@
+from datetime import datetime
+from pytz import timezone
+
+DEBUG = False
+
+EDITION = '{{ edition }}'
+DIGITAL_EDITION = True
+SUBMISSION_DEADLINE = datetime(
+    {{ deadline['year'] | int }},
+    {{ deadline['month'] | int }},
+    {{ deadline['day'] | int }},
+    tzinfo=timezone('Europe/Brussels')
+)
+ANNOUNCEMENT_DATE = datetime(
+    {{ announcement['year'] | int }},
+    {{ announcement['month'] | int }},
+    {{ announcement['day'] | int }},
+    tzinfo=timezone('Europe/Brussels')
+)
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '{{ db['name'] }}',
+        'USER': '{{ db['user'] }}',
+        'PASSWORD': '{{ db_password }}',
+        'HOST': '{{ db['host'] }}',
+        'PORT': '{{ db['port'] }}'
+    }
+}
+
+EMAIL_HOST = '{{ email['host'] }}'
+EMAIL_PORT = {{ email['port'] | int }}
+EMAIL_HOST_USER = '{{ email['user'] }}'
+EMAIL_HOST_PASSWORD = '{{ email_password }}'
+EMAIL_USE_TLS = True

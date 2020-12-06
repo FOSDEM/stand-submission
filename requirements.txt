@@ -4,3 +4,4 @@ pytz
 djangorestframework
 markdown
 django-filter
+gunicorn
