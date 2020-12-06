@@ -19,5 +19,5 @@
 - name: Run migrations
   community.general.django_manage:
     command: 'migrate'
-    project_path: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/standssubmission/standssubmission"
+    project_path: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/standssubmission"
     virtualenv: "/var/opt/app/fosdem_submission/{{version}}-venv"

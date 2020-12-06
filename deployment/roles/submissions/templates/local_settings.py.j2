@@ -2,6 +2,7 @@ from datetime import datetime
 from pytz import timezone
 
 DEBUG = False
+ALLOWED_HOSTS = ['*']
 
 EDITION = '{{ edition }}'
 DIGITAL_EDITION = True
@@ -21,11 +22,11 @@ ANNOUNCEMENT_DATE = datetime(
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '{{ db['name'] }}',
-        'USER': '{{ db['user'] }}',
+        'NAME': '{{ database['name'] }}',
+        'USER': '{{ database['user'] }}',
         'PASSWORD': '{{ db_password }}',
-        'HOST': '{{ db['host'] }}',
-        'PORT': '{{ db['port'] }}'
+        'HOST': '{{ database['host'] }}',
+        'PORT': '{{ database['port'] }}'
     }
 }
 
