@@ -1,8 +1,8 @@
 - name: Install dependencies
-  package:
+  apt:
     name:
       - nginx
-  state: present
+    state: present
 - name: Create application path
   file:
     path: /var/opt/app/fosdem_submission/static

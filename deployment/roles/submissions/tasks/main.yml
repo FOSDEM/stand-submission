@@ -7,3 +7,5 @@
   become: yes
   become_user: fosdem_submission
   become_method: sudo
+- name: Set up proxy and web server
+  include: management.yml
