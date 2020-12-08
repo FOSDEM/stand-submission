@@ -7,7 +7,6 @@
   file:
     path: /var/opt/app/fosdem_submission/static
     state: directory
-    src: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/static"
     owner: fosdem_submission
     group: fosdem_submission
 - name: Create systemd service file
