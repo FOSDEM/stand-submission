@@ -89,7 +89,7 @@ def received(request):
                 'edition': submission.fosdem_edition
             })
         else:
-            return render(request, 'submission/received.html', {
+            return render(request, 'submission/form.html', {
                 'failed': True,
                 'form': form
             })

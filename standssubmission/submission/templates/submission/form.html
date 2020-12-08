@@ -12,6 +12,7 @@
                         <div class="form-group">
                             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                             {{ field | add_css_class:"form-control" }}
+                            {{ field.errors }}
                         </div>
                     {% else %}
                         {{ field }}

@@ -49,7 +49,7 @@ class SubmissionForm(forms.Form):
     ##
     # Digital edition?
     ##
-    digital_edition = forms.BooleanField(widget=forms.HiddenInput)
+    digital_edition = forms.BooleanField(widget=forms.HiddenInput, initial=True)
     digital_showcase = forms.CharField(
         widget=forms.Textarea,
         label='Please enter a short (10 lines) description of why people should come to your stand.'
