@@ -21,3 +21,8 @@
     command: 'migrate'
     project_path: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/standssubmission"
     virtualenv: "/var/opt/app/fosdem_submission/{{version}}-venv"
+- name: Collect static files
+  community.general.django_manage:
+    command: 'collectstatic'
+    project_path: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/standssubmission"
+    virtualenv: "/var/opt/app/fosdem_submission/{{version}}-venv"

@@ -12,5 +12,6 @@
     name: fosdem_submission
     create_home: yes
     home: /var/opt/app/fosdem_submission
+    system: true
     password: '*'
     shell: /usr/bin/false
