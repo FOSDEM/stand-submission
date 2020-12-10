@@ -29,13 +29,13 @@ class SubmissionForm(forms.Form):
         choices=DURATION_CHOICES
     )
     submission_primary_name = forms.CharField(label='Primary contact person')
-    submission_primary_email = forms.CharField(label='Primary contact person e-mail')
+    submission_primary_email = forms.EmailField(label='Primary contact person e-mail')
     submission_primary_reason = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 5}),
         label='What is the relation between the project and the primary contact?'
     )
     submission_secondary_name = forms.CharField(label='Secondary contact person')
-    submission_secondary_email = forms.CharField(label='Secondary contact person e-mail')
+    submission_secondary_email = forms.EmailField(label='Secondary contact person e-mail')
     submission_secondary_reason = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 5}),
         label='What is the relation between the project and the secondary contact?'

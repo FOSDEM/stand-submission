@@ -15,6 +15,10 @@ class SubmissionMail:
         self.submission = submission
 
     @property
+    def stands_list_message(self):
+        pass
+
+    @property
     def message(self):
         msg = """
 Hello,
