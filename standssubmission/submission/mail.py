@@ -57,7 +57,7 @@ The FOSDEM {0} Stands Team
                 self.submission.project.name
             ),
             self.message,
-            'servers@helptux.be',
+            'stands-tool@fosdem.org',
             [
                 self.submission.primary_contact.email,
                 self.submission.secondary_contact.email

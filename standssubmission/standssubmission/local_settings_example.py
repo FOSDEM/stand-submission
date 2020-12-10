@@ -44,5 +44,3 @@ DATABASES = {
 ##
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'stands'
-EMAIL_HOST_PASSWORD = 'stands'
