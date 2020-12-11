@@ -11,7 +11,7 @@
             {% endif %}
             <form action="{% url 'received' %}" method="post">
                 {% csrf_token %}
-                {% if form.non_field_errors and len(form.non_field_errors) > 0 %}
+                {% if form.non_field_errors %}
                     {% for error in form.non_field_errors %}
                         <div class="invalid-feedback" role="alert">
                             {{ error }}
@@ -23,7 +23,7 @@
                     {% if not field.is_hidden %}
                         <div class="form-group">
                             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {% if field.errors and len(field.errors) > 0 %}
+                            {% if field.errors %}
                             {{ field | add_css_class:"form-control is-invalid" }}
                             {% for error in field.errors %}
                                 <div class="invalid-feedback" role="alert">
