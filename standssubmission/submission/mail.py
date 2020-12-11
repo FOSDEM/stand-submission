@@ -2,7 +2,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import DURATION_CHOICES
 
-
 _DURATION_CHOICES = {
     c[0]: c[1]
     for c in DURATION_CHOICES
@@ -16,7 +15,65 @@ class SubmissionMail:
 
     @property
     def stands_list_message(self):
-        pass
+        msg = """
+Hello,
+
+A new submission has been entered in the system. It can be reviewed at https://stands.fosdem.org/admin/
+
+For reference, this is what has been entered:
+
+Project: {0}
+Theme: {1}
+Website: {2}
+Source code: {3}
+Requested time slot: {4}
+Primary contact: {5} (<{6}>)
+    Relation: {7}
+Secondary contact: {8} (<{9}>)
+    Relation: {10}
+
+Description:
+{11}
+
+Social media:
+{12}
+
+Why they want to be at FOSDEM:
+{13}
+
+Showcase (digital edition):
+{14}
+
+New this year (digital edition):
+{15}
+
+Notes:
+{16}
+
+Kind regards,
+
+The FOSDEM Stands Tool
+"""
+        msg = msg.format(
+            self.submission.project.name,
+            self.submission.project.theme.theme,
+            self.submission.project.website,
+            self.submission.project.source,
+            _DURATION_CHOICES[self.submission.duration],
+            self.submission.primary_contact.name,
+            self.submission.primary_contact.email,
+            self.submission.primary_reason,
+            self.submission.secondary_contact.name,
+            self.submission.secondary_contact.email,
+            self.submission.secondary_reason,
+            self.submission.project.description,
+            self.submission.project.social,
+            self.submission.justification,
+            self.submission.digital_edition.showcase,
+            self.submission.digital_edition.new_this_year,
+            self.submission.notes
+        )
+        return msg
 
     @property
     def message(self):
@@ -34,6 +91,7 @@ Theme: {3}
 Requested time slot: {4}
 Primary contact: {5} (<{6}>)
 Secondary contact: {7} (<{8}>)
+
 
 If you have any questions or remarks, please contact us at stands@fosdem.org.
 
@@ -55,15 +113,28 @@ The FOSDEM {0} Stands Team
         return msg
 
     def send(self):
-        return send_mail(
-            'Your FOSDEM {0} submission for {1} has been received'.format(
-                settings.EDITION,
-                self.submission.project.name
+        return [
+            send_mail(
+                'A new submission for FOSDEM {0}: {1}'.format(
+                    settings.EDITION,
+                    self.submission.project.name
+                ),
+                self.stands_list_message,
+                'stands-tool@fosdem.org',
+                [
+                    'stands@fosdem.org'
+                ]
             ),
-            self.message,
-            'stands-tool@fosdem.org',
-            [
-                self.submission.primary_contact.email,
-                self.submission.secondary_contact.email
-            ]
-        )
+            send_mail(
+                'Your FOSDEM {0} submission for {1} has been received'.format(
+                    settings.EDITION,
+                    self.submission.project.name
+                ),
+                self.message,
+                'stands-tool@fosdem.org',
+                [
+                    self.submission.primary_contact.email,
+                    self.submission.secondary_contact.email
+                ]
+            )
+        ]
