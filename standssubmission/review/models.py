@@ -27,6 +27,9 @@ class Review(models.Model):
             reviewer = '{0} {1}'.format(self.reviewer.first_name, self.reviewer.last_name)
         return 'Review by {0} for {1}'.format(reviewer, self.submission.__str__())
 
+    def current_decision(self):
+        return self.submission.decision.accepted
+
 
 class Decision(models.Model):
     submission = models.OneToOneField(

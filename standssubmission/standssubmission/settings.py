@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'submission',
-    'stands'
+    'stands',
+    'review'
 ]
 
 MIDDLEWARE = [
@@ -140,9 +141,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
-STATICFILES_DIRS = [
-    '{0}/static'.format(BASE_DIR)
-]
 
 ##
 # Custom settings
