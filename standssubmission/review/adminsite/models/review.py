@@ -1,7 +1,9 @@
 from django.contrib import admin
 from ...models import Review
+from submission.models import Submission
 from django.utils.html import format_html
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
 
 class ReviewAdmin(admin.ModelAdmin):
@@ -9,8 +11,12 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 class SubmissionAdmin(admin.ModelAdmin):
+    # List
     list_display = ('project_name', 'project_description', 'theme', 'duration', 'justification',
                     'showcase', 'new_this_year', 'review', 'more_details', 'reviewed_by', 'current_score', 'accepted')
+    list_filter = ('project__theme__theme',)
+
+    # Form
     readonly_fields = ['project_name', 'theme', 'duration', 'project_description', 'project_website', 'project_source',
                        'project_social', 'justification', 'primary_contact_full', 'primary_reason',
                        'secondary_contact_full', 'secondary_reason', 'showcase', 'new_this_year', 'notes',
@@ -19,6 +25,8 @@ class SubmissionAdmin(admin.ModelAdmin):
               'project_social', 'justification', 'primary_contact_full', 'primary_reason',
               'secondary_contact_full', 'secondary_reason', 'showcase', 'new_this_year', 'notes',
               'late_submission', 'current_score', 'accepted']
+    save_as = False
+    save_as_continue = False
 
     def __init__(self, *args, **kwargs):
         super(SubmissionAdmin, self).__init__(*args, **kwargs)
