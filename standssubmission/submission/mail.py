@@ -1,6 +1,7 @@
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import DURATION_CHOICES
+from django.urls import reverse
 
 _DURATION_CHOICES = {
     c[0]: c[1]
@@ -18,7 +19,7 @@ class SubmissionMail:
         msg = """
 Hello,
 
-A new submission has been entered in the system. It can be reviewed at https://stands.fosdem.org/admin/
+A new submission has been entered in the system. It can be reviewed at {17}
 
 For reference, this is what has been entered:
 
@@ -71,7 +72,11 @@ The FOSDEM Stands Tool
             self.submission.justification,
             self.submission.digital_edition.showcase,
             self.submission.digital_edition.new_this_year,
-            self.submission.notes
+            self.submission.notes,
+            'https://stands.fosdem.org{0}?submission={1}'.format(
+                reverse('review_admin:review_review_add'),
+                self.submission.id
+            )
         )
         return msg
 

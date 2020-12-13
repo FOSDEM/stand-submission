@@ -34,7 +34,7 @@ class Submission(models.Model):
         related_name='secondary_contact'
     )
     secondary_reason = models.TextField('Secondary contact relation to project')
-    notes = models.TextField('Comments', null=True)
+    notes = models.TextField('Comments', default='', blank=True)
     late_submission = models.BooleanField('Late submission', default=False)
     submission_date = models.DateTimeField('Submission date')
     submission_for_digital_edition = models.BooleanField('Digital edition', default=False)

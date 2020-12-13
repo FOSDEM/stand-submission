@@ -19,7 +19,7 @@ class Review(models.Model):
         'Score',
         default=0
     )
-    comments = models.TextField('Comments', null=True)
+    comments = models.TextField('Comments', default='', blank=True)
 
     def __str__(self):
         reviewer = self.reviewer.username

@@ -11,6 +11,14 @@ class ReviewAdmin(admin.ModelAdmin):
 class SubmissionAdmin(admin.ModelAdmin):
     list_display = ('project_name', 'project_description', 'theme', 'duration', 'justification',
                     'showcase', 'new_this_year', 'review', 'more_details', 'reviewed_by', 'current_score', 'accepted')
+    readonly_fields = ['project_name', 'theme', 'duration', 'project_description', 'project_website', 'project_source',
+                       'project_social', 'justification', 'primary_contact_full', 'primary_reason',
+                       'secondary_contact_full', 'secondary_reason', 'showcase', 'new_this_year', 'notes',
+                       'late_submission', 'current_score', 'accepted']
+    fields = ['project_name', 'theme', 'duration', 'project_description', 'project_website', 'project_source',
+              'project_social', 'justification', 'primary_contact_full', 'primary_reason',
+              'secondary_contact_full', 'secondary_reason', 'showcase', 'new_this_year', 'notes',
+              'late_submission', 'current_score', 'accepted']
 
     def __init__(self, *args, **kwargs):
         super(SubmissionAdmin, self).__init__(*args, **kwargs)
@@ -79,7 +87,7 @@ class SubmissionAdmin(admin.ModelAdmin):
     @staticmethod
     def more_details(obj):
         return format_html('<a href="{0}">More details</a>'.format(
-            reverse('admin:submission_submission_change', args=(obj.id,))
+            reverse('review_admin:submission_submission_change', args=(obj.id,))
         ))
 
     @staticmethod
@@ -104,3 +112,29 @@ class SubmissionAdmin(admin.ModelAdmin):
         if hasattr(obj, 'decision') and obj.decision:
             return obj.decision.accepted
         return False
+
+    @staticmethod
+    def project_website(obj):
+        return obj.project.website
+
+    @staticmethod
+    def project_source(obj):
+        return obj.project.source
+
+    @staticmethod
+    def project_social(obj):
+        return obj.project.social
+
+    @staticmethod
+    def primary_contact_full(obj):
+        return '{0} (<{1}>)'.format(
+            obj.primary_contact.name,
+            obj.primary_contact.email
+        )
+
+    @staticmethod
+    def secondary_contact_full(obj):
+        return '{0} (<{1}>)'.format(
+            obj.primary_contact.name,
+            obj.primary_contact.email
+        )
