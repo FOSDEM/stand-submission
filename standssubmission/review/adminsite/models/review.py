@@ -11,10 +11,16 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 class SubmissionAdmin(admin.ModelAdmin):
+    change_list_template = 'review/admin/submission/change_list.html'
+
     # List
     list_display = ('project_name', 'project_description', 'theme', 'duration', 'justification',
                     'showcase', 'new_this_year', 'review', 'more_details', 'reviewed_by', 'current_score', 'accepted')
-    list_filter = ('project__theme__theme',)
+    list_filter = ('project__theme__theme', 'decision__accepted')
+    ordering = ('project__name', 'project__theme__theme', 'decision__accepted')
+    actions_on_top = False
+    list_max_show_all = 1000
+    list_per_page = 1000
 
     # Form
     readonly_fields = ['project_name', 'theme', 'duration', 'project_description', 'project_website', 'project_source',

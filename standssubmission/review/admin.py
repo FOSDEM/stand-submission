@@ -11,6 +11,7 @@ class ReviewAdminSite(admin.AdminSite):
     site_header = 'FOSDEM stands review'
     site_title = 'FOSDEM {0} stands review'.format(settings.EDITION)
     index_title = 'Welcome to the FOSDEM stands review site'
+    enable_nav_sidebar = False
 
 
 review_admin_site = ReviewAdminSite(name='review_admin')
