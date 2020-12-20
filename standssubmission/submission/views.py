@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.utils.translation import gettext_lazy as _
 from .mail import SubmissionMail
 from .models import *
 from .forms import *
 from django.conf import settings
+from django.forms import ValidationError
 from datetime import datetime
 from pytz import timezone
 
@@ -40,6 +42,17 @@ def received(request):
                 project.social = form.cleaned_data['project_social']
                 project.source = form.cleaned_data['project_source']
             project.save()
+
+            # Check if submission already exists
+            try:
+                submission = Submission.objects.get(project=project, fosdem_edition=settings.EDITION)
+            except Submission.DoesNotExist:
+                pass
+            else:
+                raise ValidationError(_('A submission for {0} ({1}) already exists.'.format(
+                    project.name,
+                    settings.EDITION
+                )))
 
             primary_contact = add_contact({
                 'name': form.cleaned_data['submission_primary_name'],

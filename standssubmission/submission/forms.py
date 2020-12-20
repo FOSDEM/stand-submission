@@ -1,5 +1,8 @@
 from django import forms
 from .models import Theme, Submission, DURATION_CHOICES
+from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
+from django.conf import settings
 
 
 class SubmissionForm(forms.Form):
@@ -59,3 +62,19 @@ class SubmissionForm(forms.Form):
         label='Please enter a short (15 lines) overview of all the new things for your project since your last FOSDEM'
               ' and anything new to expect this year.'
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('project_name'):
+            try:
+                Submission.objects.get(project__name=cleaned_data.get('project_name'), fosdem_edition=settings.EDITION)
+            except Submission.DoesNotExist:
+                pass
+            else:
+                raise ValidationError(
+                    _('Project {0} has already submitted a proposal for FOSDEM {1}.'.format(
+                        cleaned_data.get('project_name'),
+                        settings.EDITION
+                    ))
+                )
+        return cleaned_data
