@@ -44,15 +44,17 @@ def received(request):
             project.save()
 
             # Check if submission already exists
-            try:
-                submission = Submission.objects.get(project=project, fosdem_edition=settings.EDITION)
-            except Submission.DoesNotExist:
-                pass
-            else:
-                raise ValidationError(_('A submission for {0} ({1}) already exists.'.format(
-                    project.name,
-                    settings.EDITION
-                )))
+            submissions = Submission.objects.filter(
+                project=project,
+                fosdem_edition=settings.EDITION
+            )
+            if submissions:
+                raise ValidationError(
+                    _('Project {0} has already submitted a proposal for FOSDEM {1}.'.format(
+                        project.name,
+                        settings.EDITION
+                    ))
+                )
 
             primary_contact = add_contact({
                 'name': form.cleaned_data['submission_primary_name'],

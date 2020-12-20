@@ -56,21 +56,22 @@ class SubmissionForm(forms.Form):
     digital_showcase = forms.CharField(
         widget=forms.Textarea,
         label='Please enter a short (10 lines) description of why people should come to your stand.'
+              ' This will be added to your stand on the overview website.'
     )
     digital_what_is_new = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 15}),
         label='Please enter a short (15 lines) overview of all the new things for your project since your last FOSDEM'
-              ' and anything new to expect this year.'
+              ' and anything new to expect this year. This will be added to your stand on the overview website.'
     )
 
     def clean(self):
         cleaned_data = super().clean()
         if cleaned_data.get('project_name'):
-            try:
-                Submission.objects.get(project__name=cleaned_data.get('project_name'), fosdem_edition=settings.EDITION)
-            except Submission.DoesNotExist:
-                pass
-            else:
+            submissions = Submission.objects.filter(
+                project__name=cleaned_data.get('project_name'),
+                fosdem_edition=settings.EDITION
+            )
+            if submissions:
                 raise ValidationError(
                     _('Project {0} has already submitted a proposal for FOSDEM {1}.'.format(
                         cleaned_data.get('project_name'),
