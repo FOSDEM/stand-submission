@@ -1,0 +1,12 @@
+[
+  {
+    "model": "submission.FOSDEMStandsEdition",
+    "pk": 1,
+    "fields": {
+      "submissions_open": false,
+      "accepted_announced": false,
+      "deadline": "2020-12-25",
+      "edition_id": 1
+    }
+  }
+]

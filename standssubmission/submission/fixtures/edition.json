@@ -1,0 +1,9 @@
+[
+  {
+    "model": "submission.FOSDEMEdition",
+    "pk": 1,
+    "fields": {
+      "year": "2021"
+    }
+  }
+]

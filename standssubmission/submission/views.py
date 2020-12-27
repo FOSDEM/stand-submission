@@ -24,6 +24,7 @@ def received(request):
     if request.method == 'POST':
         form = SubmissionForm(request.POST)
         if form.is_valid():
+            edition = FOSDEMStandsEdition.objects.get(edition__year=settings.EDITION)
             try:
                 project = Project.objects.get(name=form.cleaned_data['project_name'])
             except Project.DoesNotExist:
@@ -46,7 +47,7 @@ def received(request):
             # Check if submission already exists
             submissions = Submission.objects.filter(
                 project=project,
-                fosdem_edition=settings.EDITION
+                edition=edition
             )
             if submissions:
                 raise ValidationError(
@@ -80,7 +81,8 @@ def received(request):
                 late_submission = True
 
             submission = Submission(
-                fosdem_edition=settings.EDITION,
+                fosdem_edition=edition.edition.year,
+                edition=edition,
                 project_id=project.id,
                 justification=form.cleaned_data['submission_justification'],
                 duration=form.cleaned_data['submission_duration'],

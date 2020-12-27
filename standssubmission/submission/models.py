@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 DURATION_CHOICES = [
     ('ALL', 'Entire conference'),
@@ -11,6 +10,11 @@ DURATION_CHOICES = [
 
 class Submission(models.Model):
     fosdem_edition = models.CharField('FOSDEM edition', max_length=5)
+    edition = models.ForeignKey(
+        'FOSDEMStandsEdition',
+        models.SET_NULL,
+        null=True
+    )
     project = models.ForeignKey(
         'Project',
         models.CASCADE
@@ -85,5 +89,28 @@ class DigitalEdition(models.Model):
     def __str__(self):
         try:
             return 'Digital submission for {0}'.format(self.submission_set.all()[0].project.name)
+        except Exception as e:
+            return str(self.id)
+
+
+class FOSDEMEdition(models.Model):
+    year = models.CharField('Edition', max_length=5)
+
+    def __str__(self):
+        return self.year
+
+
+class FOSDEMStandsEdition(models.Model):
+    submissions_open = models.BooleanField('Submissions open', default=False)
+    accepted_announced = models.BooleanField('Accepted submissions announced', default=False)
+    deadline = models.DateField('Deadline')
+    edition = models.ForeignKey(
+        'FOSDEMEdition',
+        models.CASCADE
+    )
+
+    def __str__(self):
+        try:
+            return 'Stands submission for {0}'.format(self.edition.year)
         except Exception as e:
             return str(self.id)

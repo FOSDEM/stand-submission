@@ -1,8 +1,10 @@
 from django import forms
-from .models import Theme, Submission, DURATION_CHOICES
+from .models import Theme, Submission, DURATION_CHOICES, FOSDEMStandsEdition
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from datetime import datetime, date
+from pytz import timezone
 
 
 class SubmissionForm(forms.Form):
@@ -66,16 +68,36 @@ class SubmissionForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
+        try:
+            edition = FOSDEMStandsEdition.objects.get(edition__year=settings.EDITION)
+        except Exception as e:
+            raise ValidationError(
+                _('Submissions for FOSDEM are not open yet.')
+            )
+        if not edition.submissions_open:
+            now_dt = date.today()
+            if edition.deadline < now_dt:
+                raise ValidationError(
+                    _('Submissions for FOSDEM {0} are no longer open.'.format(
+                        edition.edition.year
+                    ))
+                )
+            else:
+                raise ValidationError(
+                    _('Submissions for FOSDEM {0} are not open yet.'.format(
+                        edition.edition.year
+                    ))
+                )
         if cleaned_data.get('project_name'):
             submissions = Submission.objects.filter(
                 project__name=cleaned_data.get('project_name'),
-                fosdem_edition=settings.EDITION
+                edition=edition
             )
             if submissions:
                 raise ValidationError(
                     _('Project {0} has already submitted a proposal for FOSDEM {1}.'.format(
                         cleaned_data.get('project_name'),
-                        settings.EDITION
+                        edition.edition.year
                     ))
                 )
         return cleaned_data
