@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf import settings
 from .adminsite.models.review import ReviewAdmin, SubmissionAdmin
-from .models import Review
+from .models import Review, Decision
 from submission.models import Submission
 
 # Register your models here.
@@ -19,3 +19,4 @@ review_admin_site = ReviewAdminSite(name='review_admin')
 
 review_admin_site.register(Submission, SubmissionAdmin)
 review_admin_site.register(Review, ReviewAdmin)
+review_admin_site.register(Decision)
