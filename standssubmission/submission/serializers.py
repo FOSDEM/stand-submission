@@ -9,18 +9,24 @@ class ThemeSerializer(serializers.ModelSerializer):
         fields = ('theme', )
 
 
+class ThemeViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Theme
+        fields = ('theme', 'description')
+
+
 class ProjectSerializer(serializers.ModelSerializer):
     theme = ThemeSerializer(read_only=True)
 
     class Meta:
         model = Project
-        fields = ('name', 'description', 'theme')
+        fields = ('name', 'description', 'theme', 'website')
 
 
 class DigitalEditionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DigitalEdition
-        fields = ('showcase', 'new_this_year')
+        fields = ('showcase', 'new_this_year', 'stand_website_code', 'stand_website_static')
 
 
 class SubmissionSerializer(serializers.ModelSerializer):

@@ -77,6 +77,7 @@ class Contact(models.Model):
 
 class Theme(models.Model):
     theme = models.CharField('Theme', max_length=1024)
+    description = models.TextField('Theme description', null=True)
 
     def __str__(self):
         return self.theme
@@ -85,6 +86,8 @@ class Theme(models.Model):
 class DigitalEdition(models.Model):
     showcase = models.TextField('Showcase')
     new_this_year = models.TextField('What\'s new this year')
+    stand_website_code = models.URLField('Location of content files', null=True)
+    stand_website_static = models.URLField('Location of static files', null=True)
 
     def __str__(self):
         try:

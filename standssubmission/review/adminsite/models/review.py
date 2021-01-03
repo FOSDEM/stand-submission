@@ -149,6 +149,6 @@ class SubmissionAdmin(admin.ModelAdmin):
     @staticmethod
     def secondary_contact_full(obj):
         return '{0} (<{1}>)'.format(
-            obj.primary_contact.name,
-            obj.primary_contact.email
+            obj.secondary_contact.name,
+            obj.secondary_contact.email
         )
