@@ -1,9 +1,8 @@
 from django.contrib import admin
-from ...models import Review
-from submission.models import Submission
+from ...models import Decision
 from django.utils.html import format_html
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
+from ..accepted_mailer import AcceptedSubmissionMailer
 
 
 class ReviewAdmin(admin.ModelAdmin):
@@ -18,7 +17,8 @@ class SubmissionAdmin(admin.ModelAdmin):
                     'showcase', 'new_this_year', 'review', 'more_details', 'reviewed_by', 'current_score', 'accepted')
     list_filter = ('project__theme__theme', 'decision__accepted')
     ordering = ('project__name', 'project__theme__theme', 'decision__accepted')
-    actions_on_top = False
+    actions = ('accept', )
+    actions_on_top = True
     list_max_show_all = 1000
     list_per_page = 1000
 
@@ -152,3 +152,16 @@ class SubmissionAdmin(admin.ModelAdmin):
             obj.secondary_contact.name,
             obj.secondary_contact.email
         )
+
+    def accept(self, request, queryset):
+        for submission in queryset:
+            decision = Decision(accepted=True)
+            submission.decision = decision
+            submission.save()
+            try:
+                mailer = AcceptedSubmissionMailer(submission)
+                mailer.send()
+            except Exception as e:
+                raise e
+
+    accept.short_description = 'Accept selected stands'

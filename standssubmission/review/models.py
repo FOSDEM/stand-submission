@@ -47,3 +47,15 @@ class Decision(models.Model):
             self.submission.__str__(),
             accepted
         )
+
+
+class AcceptedMail(models.Model):
+    edition = models.OneToOneField(
+        'submission.FOSDEMEdition',
+        models.CASCADE,
+        related_name='accepted_submissions_mail'
+    )
+    contents = models.TextField('E-mail contents')
+
+    def __str__(self):
+        return self.edition.year
