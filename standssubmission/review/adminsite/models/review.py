@@ -157,9 +157,13 @@ class SubmissionAdmin(admin.ModelAdmin):
     def accept(self, request, queryset):
         logger = logging.getLogger('stands-submission')
         for submission in queryset:
-            decision = Decision(accepted=True)
-            submission.decision = decision
-            submission.save()
+            if not hasattr(submission, 'decision') or not submission.decision:
+                decision = Decision(accepted=True)
+                submission.decision = decision
+                decision.save()
+                submission.save()
+            else:
+                submission.decision.accepted = True
             try:
                 mailer = AcceptedSubmissionMailer(submission)
                 mailer.send()
