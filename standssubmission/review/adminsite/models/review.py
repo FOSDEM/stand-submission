@@ -3,6 +3,7 @@ from ...models import Decision
 from django.utils.html import format_html
 from django.urls import reverse
 from ..accepted_mailer import AcceptedSubmissionMailer
+import logging
 
 
 class ReviewAdmin(admin.ModelAdmin):
@@ -154,6 +155,7 @@ class SubmissionAdmin(admin.ModelAdmin):
         )
 
     def accept(self, request, queryset):
+        logger = logging.getLogger('stands-submission')
         for submission in queryset:
             decision = Decision(accepted=True)
             submission.decision = decision
@@ -162,6 +164,6 @@ class SubmissionAdmin(admin.ModelAdmin):
                 mailer = AcceptedSubmissionMailer(submission)
                 mailer.send()
             except Exception as e:
-                raise e
+                logger.error(e)
 
     accept.short_description = 'Accept selected stands'
