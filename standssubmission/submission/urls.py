@@ -5,6 +5,7 @@ from . import views, api_views
 api_router = routers.DefaultRouter()
 api_router.register('accepted', api_views.DecisionViewSet)
 api_router.register('themes', api_views.ThemeViewSet)
+api_router.register('email', api_views.ContactViewSet)
 
 
 urlpatterns = [

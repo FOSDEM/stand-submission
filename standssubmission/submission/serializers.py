@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from review.models import Decision
-from .models import Submission, Project, Theme, DigitalEdition
+from .models import Submission, Project, Theme, DigitalEdition, Contact
 
 
 class ThemeSerializer(serializers.ModelSerializer):
@@ -41,6 +41,30 @@ class SubmissionSerializer(serializers.ModelSerializer):
 class DecisionSerializer(serializers.ModelSerializer):
     submission = SubmissionSerializer(read_only=True)
     
+    class Meta:
+        model = Decision
+        fields = ('submission', )
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = ('name', 'email')
+
+
+class ContactSubmissionSerializer(serializers.ModelSerializer):
+    primary_contact = ContactSerializer(read_only=True)
+    secondary_contact = ContactSerializer(read_only=True)
+    project = ProjectSerializer(read_only=True)
+
+    class Meta:
+        model = Submission
+        fields = ('project', 'primary_contact', 'secondary_contact')
+
+
+class ContactDecisionSerializer(serializers.ModelSerializer):
+    submission = ContactSubmissionSerializer(read_only=True)
+
     class Meta:
         model = Decision
         fields = ('submission', )
