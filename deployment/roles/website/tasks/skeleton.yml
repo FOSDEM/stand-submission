@@ -1,0 +1,9 @@
+- name: Create application path
+  file:
+    path: /var/opt/app/fosdem_submission/html
+    owner: fosdem_submission
+    group: fosdem_submission
+    state: directory
+- name: Install hugo
+  apt:
+    deb: https://github.com/gohugoio/hugo/releases/download/v0.80.0/hugo_extended_0.80.0_Linux-64bit.deb

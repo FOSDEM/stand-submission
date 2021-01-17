@@ -1,0 +1,9 @@
+- name: Clone website
+  git:
+    dest: /var/opt/app/fosdem_submission/html
+    force: yes
+    repo: https://github.com/FOSDEM/stands-website.git
+- name: Build website
+  command:
+    cmd: 'hugo'
+    chdir: /var/opt/app/fosdem_submission/html/stands-website
