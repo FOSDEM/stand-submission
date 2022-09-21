@@ -20,7 +20,8 @@ def index(request):
         'digital_edition': settings.DIGITAL_EDITION,
         'blurb': edition.description,
         'deadline': edition.deadline,
-        'submissions_open': edition.submissions_open
+        'submissions_open': edition.submissions_open,
+        'edition': settings.EDITION
     })
 
 

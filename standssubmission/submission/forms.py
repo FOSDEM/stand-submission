@@ -55,16 +55,17 @@ class SubmissionForm(forms.Form):
     # Digital edition?
     ##
     digital_edition = forms.BooleanField(widget=forms.HiddenInput, initial=True)
-    digital_showcase = forms.CharField(
-        widget=forms.Textarea,
-        label='Please enter a short (10 lines) description of why people should come to your stand.'
-              ' This will be added to your stand on the overview website.'
-    )
-    digital_what_is_new = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 15}),
-        label='Please enter a short (15 lines) overview of all the new things for your project since your last FOSDEM'
-              ' and anything new to expect this year. This will be added to your stand on the overview website.'
-    )
+    if settings.DIGITAL_EDITION:
+        digital_showcase = forms.CharField(
+            widget=forms.Textarea,
+            label='Please enter a short (10 lines) description of why people should come to your stand.'
+                  ' This will be added to your stand on the overview website.'
+        )
+        digital_what_is_new = forms.CharField(
+            widget=forms.Textarea(attrs={'rows': 15}),
+            label='Please enter a short (15 lines) overview of all the new things for your project since your last FOSDEM'
+                  ' and anything new to expect this year. This will be added to your stand on the overview website.'
+        )
 
     def clean(self):
         cleaned_data = super().clean()

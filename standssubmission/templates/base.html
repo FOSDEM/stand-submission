@@ -23,17 +23,17 @@
 <div class="container">
     <div class="row mb-4 px-4 py-4" id="header">
         <div class="col-2">
-            <img src="{% static "submission/fosdem21.png" %}" alt="FOSDEM 21 logo"/>
+            <img src="{% static "submission/fosdem23.png" %}" alt="FOSDEM 23 logo"/>
         </div>
         <div class="col text-center">
             <ul class="list-inline">
-                <li class="list-inline-item"><a href="https://fosdem.org/2021/">Home</a></li>
-                <li class="list-inline-item"><a href="https://fosdem.org/2021/about/">About</a></li>
-                <li class="list-inline-item"><a href="https://fosdem.org/2021/news/">News</a></li>
-                <li class="list-inline-item"><a href="https://fosdem.org/2021/schedule/">Schedule</a></li>
-                <li class="list-inline-item"><a href="https://fosdem.org/2021/stands/">Stands</a></li>
-                <li class="list-inline-item"><a href="https://fosdem.org/2021/volunteer/">Volunteer</a></li>
-                <li class="list-inline-item"><a href="https://fosdem.org/2021/practical/">Practical</a></li>
+                <li class="list-inline-item"><a href="https://fosdem.org/{{ edition }}/">Home</a></li>
+                <li class="list-inline-item"><a href="https://fosdem.org/{{ edition }}/about/">About</a></li>
+                <li class="list-inline-item"><a href="https://fosdem.org/{{ edition }}/news/">News</a></li>
+                <li class="list-inline-item"><a href="https://fosdem.org/{{ edition }}/schedule/">Schedule</a></li>
+                <li class="list-inline-item"><a href="https://fosdem.org/{{ edition }}/stands/">Stands</a></li>
+                <li class="list-inline-item"><a href="https://fosdem.org/{{ edition }}/volunteer/">Volunteer</a></li>
+                <li class="list-inline-item"><a href="https://fosdem.org/{{ edition }}/practical/">Practical</a></li>
             </ul>
         </div>
     </div>
@@ -45,39 +45,38 @@
         <div class="col-2">
             <h3>FOSDEM</h3>
             <ul class="list-unstyled">
-                <li class="home"><a accesskey="1" href="https://fosdem.org/2021/">Home</a></li>
-                <li><a accesskey="2" href="https://fosdem.org/2021/news/">News</a></li>
-                <li><a href="https://fosdem.org/2021/about/">About</a></li>
-                <li><a href="https://fosdem.org/2021/about/sponsors/">Sponsors</a></li>
-                <li><a href="https://fosdem.org/2021/support/donate/">Donate</a></li>
-                <li><a accesskey="5" href="https://fosdem.org/2021/faq/">FAQ</a></li>
-                <li><a href="https://fosdem.org/2021/archives/">Archives</a></li>
+                <li class="home"><a accesskey="1" href="https://fosdem.org/{{ edition }}/">Home</a></li>
+                <li><a accesskey="2" href="https://fosdem.org/{{ edition }}/news/">News</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/about/">About</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/about/sponsors/">Sponsors</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/support/donate/">Donate</a></li>
+                <li><a accesskey="5" href="https://fosdem.org/{{ edition }}/faq/">FAQ</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/archives/">Archives</a></li>
             </ul>
         </div>
         <div class="col-2">
             <h3>This year</h3>
             <ul class="list-unstyled">
-                <li><a accesskey="s" href="https://fosdem.org/2021/schedule/">Schedule</a></li>
-                <li><a href="https://fosdem.org/2021/stands/">Stands</a></li>
-                <li><a href="https://fosdem.org/2021/certification/">Certification exams</a></li>
-                <li><a href="https://fosdem.org/2021/volunteer/">Volunteer</a></li>
-                <li><a href="https://fosdem.org/2021/fringe/">Fringe</a></li>
+                <li><a accesskey="s" href="https://fosdem.org/{{ edition }}/schedule/">Schedule</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/stands/">Stands</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/volunteer/">Volunteer</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/fringe/">Fringe</a></li>
             </ul>
         </div>
         <div class="col-2">
             <h3>Practical information</h3>
             <ul class="list-unstyled">
-                <li><a href="https://fosdem.org/2021/practical/accessibility/">Accessibility</a></li>
-                <li><a href="https://fosdem.org/2021/practical/conduct/">Code of Conduct</a></li>
-                <li><a href="https://fosdem.org/2021/practical/services/">During the Event</a></li>
-                <li><a href="https://fosdem.org/2021/practical/jobcorner/">Job Corner</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/practical/accessibility/">Accessibility</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/practical/conduct/">Code of Conduct</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/practical/services/">During the Event</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/practical/jobcorner/">Job Corner</a></li>
             </ul>
         </div>
         <div class="col-2">
             <h3>Media and press</h3>
             <ul class="list-unstyled">
-                <li><a href="https://fosdem.org/2021/interviews/">Interviews</a></li>
-                <li><a href="https://fosdem.org/2021/social/">Social media</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/interviews/">Interviews</a></li>
+                <li><a href="https://fosdem.org/{{ edition }}/social/">Social media</a></li>
             </ul>
         </div>
     </div>
@@ -86,8 +85,8 @@
             <div class="media">
                 <img src="{% static "submission/cogweel.png" %}" alt="FOSDEM logo" class="mr-3"/>
                 <div class="media-body pt-2">
-                    <img src="{% static "submission/fosdem21_bw.png" %}" alt="FOSDEM 21 logo"/>
-                    <p class="mt-2">Online / <strong>6 & 7 February 2021</strong></p>
+                    <img src="{% static "submission/fosdem23_bw.png" %}" alt="FOSDEM 23 logo"/>
+                    <p class="mt-2">Online / <strong>4 & 5 February 2023</strong></p>
                 </div>
             </div>
         </div>
