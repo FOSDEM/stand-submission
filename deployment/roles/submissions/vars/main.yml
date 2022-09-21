@@ -1,12 +1,12 @@
 version: 1.5.0
-edition: 2021
+edition: 2023
 deadline:
-  year: 2020
-  month: 12
-  day: 25
+  year: 2022
+  month: 11
+  day: 15
 announcement:
-  year: 2021
-  month: 1
+  year: 2022
+  month: 12
   day: 1
 database:
   host: 172.20.22.145

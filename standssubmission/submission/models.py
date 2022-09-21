@@ -107,6 +107,7 @@ class FOSDEMStandsEdition(models.Model):
     submissions_open = models.BooleanField('Submissions open', default=False)
     accepted_announced = models.BooleanField('Accepted submissions announced', default=False)
     deadline = models.DateField('Deadline')
+    description = models.TextField('Blurb for the submissions page', null=True)
     edition = models.ForeignKey(
         'FOSDEMEdition',
         models.CASCADE

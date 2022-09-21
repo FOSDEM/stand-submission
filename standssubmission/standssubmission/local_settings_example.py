@@ -6,8 +6,8 @@ SECRET_KEY = ''
 ##
 # Edition
 ##
-EDITION = '2021'
-DIGITAL_EDITION = True
+EDITION = '2023'
+DIGITAL_EDITION = False
 
 ##
 # Deadlines

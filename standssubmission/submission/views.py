@@ -14,9 +14,13 @@ from pytz import timezone
 
 def index(request):
     form = SubmissionForm()
+    edition = FOSDEMStandsEdition.objects.get(edition__year=settings.EDITION)
     return render(request, 'submission/form.html', {
         'form': form,
-        'digital_edition': settings.DIGITAL_EDITION
+        'digital_edition': settings.DIGITAL_EDITION,
+        'blurb': edition.description,
+        'deadline': edition.deadline,
+        'submissions_open': edition.submissions_open
     })
 
 
