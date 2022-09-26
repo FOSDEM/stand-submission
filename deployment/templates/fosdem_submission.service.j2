@@ -8,8 +8,8 @@ RuntimeDirectory = fosdem_submission
 PIDFile = /run/fosdem_submission/fosdem_submission.pid
 User = fosdem_submission
 Group = fosdem_submission
-WorkingDirectory = /var/opt/app/fosdem_submission/fosdem-stand-submission-{{ version }}/standssubmission
-ExecStart = /var/opt/app/fosdem_submission/{{ version }}-venv/bin/gunicorn standssubmission.wsgi -b 127.0.0.1:5000 --pid /run/fosdem_submission/fosdem_submission.pid
+WorkingDirectory = /var/opt/app/fosdem_submission/latest/standssubmission
+ExecStart = /var/opt/app/fosdem_submission/latest-venv/bin/gunicorn standssubmission.wsgi -b 127.0.0.1:5000 --pid /run/fosdem_submission/fosdem_submission.pid
 ExecReload = /bin/kill -s HUP $MAINPID
 ExecStop = /bin/kill -s TERM $MAINPID
 

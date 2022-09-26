@@ -5,5 +5,17 @@
       prompt: Provide the password for the database
     - name: email_password
       prompt: Provide the password for the e-mail user
-  roles:
-    - submissions
+  vars:
+    update: false
+  tasks:
+    - name: Set up base
+      include_tasks: skeleton.yml
+    - name: Set up Python
+      include_tasks: python.yml
+    - name: Install application
+      import_tasks: tasks/install.yml
+      become: yes
+      become_user: fosdem_submission
+      become_method: sudo
+    - name: Set up proxy and web server
+      include_tasks: management.yml

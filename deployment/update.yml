@@ -1,0 +1,14 @@
+---
+- hosts: all
+  vars:
+    update: true
+  tasks:
+    - name: Install application
+      import_tasks: tasks/install.yml
+      become: yes
+      become_user: fosdem_submission
+      become_method: sudo
+    - name: Start tool
+      systemd:
+        name: fosdem_submission
+        state: restarted

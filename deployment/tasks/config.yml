@@ -1,0 +1,11 @@
+- name: Deploy configuration
+  template:
+    src: local_settings.py.j2
+    dest: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/standssubmission/standssubmission/local_settings.py"
+  when: not update
+- name: Deploy configuration
+  copy:
+    src: "/var/opt/app/fosdem_submission/latest/standssubmission/standssubmission/local_settings.py"
+    dest: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/standssubmission/standssubmission/local_settings.py"
+    remote_src: true
+  when: update

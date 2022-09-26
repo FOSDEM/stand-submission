@@ -12,10 +12,8 @@
     chdir: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}"
     requirements: requirements.txt
     virtualenv: "/var/opt/app/fosdem_submission/{{version}}-venv"
-- name: Deploy configuration
-  template:
-    src: local_settings.py.j2
-    dest: "/var/opt/app/fosdem_submission/fosdem-stand-submission-{{version}}/standssubmission/standssubmission/local_settings.py"
+- name: Configure the application
+  include_tasks: config.yml
 - name: Run migrations
   community.general.django_manage:
     command: 'migrate'
