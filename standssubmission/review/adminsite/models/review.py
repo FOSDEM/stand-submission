@@ -16,7 +16,7 @@ class SubmissionAdmin(admin.ModelAdmin):
     # List
     list_display = ('project_name', 'project_description', 'theme', 'duration', 'justification',
                     'showcase', 'new_this_year', 'review', 'more_details', 'reviewed_by', 'current_score', 'accepted')
-    list_filter = ('project__theme__theme', 'decision__accepted')
+    list_filter = ('project__theme__theme', 'decision__accepted', 'fosdem_edition')
     ordering = ('project__name', 'project__theme__theme', 'decision__accepted')
     actions = ('accept', )
     actions_on_top = True
