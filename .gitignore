@@ -2,3 +2,4 @@
 __pycache__
 *.pyc
 standssubmission/standssubmission/local_settings.py
+Pipfile.lock

@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'submission',
     'stands',
-    'review'
+    'review',
+    'django_admin_reset'
 ]
 
 MIDDLEWARE = [

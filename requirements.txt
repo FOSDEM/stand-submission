@@ -4,4 +4,5 @@ pytz
 djangorestframework
 markdown
 django-filter
+django-admin-reset
 gunicorn
