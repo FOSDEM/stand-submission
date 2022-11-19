@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'submission',
     'stands',
     'review',
-    'django_admin_reset'
+    'django_admin_reset',
+    'csvexport'
 ]
 
 MIDDLEWARE = [

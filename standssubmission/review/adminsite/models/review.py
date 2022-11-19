@@ -4,6 +4,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 from ..accepted_mailer import AcceptedSubmissionMailer
 import logging
+from csvexport.actions import csvexport
 
 
 class ReviewAdmin(admin.ModelAdmin):
@@ -18,7 +19,13 @@ class SubmissionAdmin(admin.ModelAdmin):
                     'showcase', 'new_this_year', 'review', 'more_details', 'reviewed_by', 'current_score', 'accepted')
     list_filter = ('project__theme__theme', 'decision__accepted', 'fosdem_edition')
     ordering = ('project__name', 'project__theme__theme', 'decision__accepted')
-    actions = ('accept', )
+    actions = ('accept', 'csvexport')
+    csvexport_export_fields = ('project_name', 'project_description', 'theme', 'duration', 'justification',
+                               'showcase', 'new_this_year', 'review', 'more_details', 'reviewed_by', 'current_score',
+                               'accepted')
+    csvexport_selected_fields = ('project_name', 'project_description', 'theme', 'duration', 'justification',
+                                 'showcase', 'new_this_year', 'review', 'more_details', 'reviewed_by', 'current_score',
+                                 'accepted')
     actions_on_top = True
     list_max_show_all = 1000
     list_per_page = 1000
