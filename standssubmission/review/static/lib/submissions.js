@@ -1,3 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    $('#result_list').DataTable();
+    $('#result_list').DataTable({
+        'buttons': ['csv', 'excel']
+    });
 });
