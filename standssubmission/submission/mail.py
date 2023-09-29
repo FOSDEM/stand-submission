@@ -70,8 +70,8 @@ The FOSDEM Stands Tool
             self.submission.project.description,
             self.submission.project.social,
             self.submission.justification,
-            self.submission.digital_edition.showcase,
-            self.submission.digital_edition.new_this_year,
+            self.submission.digital_edition.showcase if settings.DIGITAL_EDITION else 'No digital component this year.',
+            self.submission.digital_edition.new_this_year if settings.DIGITAL_EDITION else 'No digital component this year.',
             self.submission.notes,
             'https://stands.fosdem.org{0}?submission={1}'.format(
                 reverse('review_admin:review_review_add'),
